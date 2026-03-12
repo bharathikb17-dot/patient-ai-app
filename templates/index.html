@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patient Data AI App</title>
+</head>
+
+<body>
+
+<h2>Patient Data Viewer</h2>
+
+<select id="patientSelect">
+<option>Select Patient</option>
+{% for p in patients %}
+<option value="{{p.id}}">{{p.id}}</option>
+{% endfor %}
+</select>
+
+<div id="details"></div>
+
+<h3>Ask AI</h3>
+
+<input type="text" id="question" placeholder="Ask medical question">
+<button onclick="askAI()">Ask</button>
+
+<p id="answer"></p>
+
+<script>
+
+let currentPatient = null;
+
+document.getElementById("patientSelect").addEventListener("change", function(){
+
+    fetch("/patient/" + this.value)
+    .then(res => res.json())
+    .then(data => {
+
+        currentPatient = data
+
+        document.getElementById("details").innerHTML =
+        `
+        <p>Name: ${data.name}</p>
+        <p>Age: ${data.age}</p>
+        <p>Condition: ${data.condition}</p>
+        <p>Medication: ${data.medication}</p>
+        `
+    })
+})
+
+function askAI(){
+
+fetch("/ask_ai",{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body: JSON.stringify({
+question: document.getElementById("question").value,
+patient: currentPatient
+})
+})
+.then(res=>res.json())
+.then(data=>{
+document.getElementById("answer").innerText = data.response
+})
+}
+
+</script>
+
+</body>
+</html>
