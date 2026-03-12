@@ -1,0 +1,18 @@
+{
+  "patients": [
+    {
+      "id": "P001",
+      "name": "John Doe",
+      "age": 45,
+      "condition": "Diabetes",
+      "medication": "Metformin"
+    },
+    {
+      "id": "P002",
+      "name": "Jane Smith",
+      "age": 50,
+      "condition": "Hypertension",
+      "medication": "Amlodipine"
+    }
+  ]
+}
